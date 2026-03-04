@@ -72,7 +72,7 @@ export default function SkillRadar({ averages }: { averages: SkillAverages }) {
         {hasData && (
           <polygon
             points={getPolygonPoints(values)}
-            className="fill-zinc-900/10 stroke-zinc-900 dark:fill-zinc-100/10 dark:stroke-zinc-100"
+            className="fill-indigo-600/15 stroke-indigo-600 dark:fill-indigo-400/15 dark:stroke-indigo-400"
             strokeWidth={1.5}
             strokeLinejoin="round"
           />
@@ -89,7 +89,7 @@ export default function SkillRadar({ averages }: { averages: SkillAverages }) {
                 cx={x}
                 cy={y}
                 r={2.5}
-                className="fill-zinc-900 dark:fill-zinc-100"
+                className="fill-indigo-600 dark:fill-indigo-400"
               />
             );
           })}

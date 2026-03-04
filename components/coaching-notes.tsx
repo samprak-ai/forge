@@ -32,7 +32,7 @@ export default function CoachingNotes() {
         {!loading && (
           <button
             onClick={loadNotes}
-            className="text-xs text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
+            className="text-xs text-indigo-600 transition-colors hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
           >
             {notes ? "Refresh" : "Generate"}
           </button>

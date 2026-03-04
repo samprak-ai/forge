@@ -5,7 +5,7 @@ export default function Home() {
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black">
       <main className="flex w-full max-w-lg flex-col items-center gap-8 px-4 text-center">
         <div className="space-y-3">
-          <h1 className="text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+          <h1 className="text-4xl font-bold tracking-tight text-indigo-600 dark:text-indigo-400">
             Forge
           </h1>
           <p className="text-lg text-zinc-500 dark:text-zinc-400">
@@ -16,7 +16,7 @@ export default function Home() {
         <div className="flex gap-3">
           <Link
             href="/login"
-            className="rounded-md bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="rounded-md bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400"
           >
             Sign in
           </Link>

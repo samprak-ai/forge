@@ -58,7 +58,7 @@ export default function ScoreHistory({ reps }: { reps: Rep[] }) {
               ))}
 
               <div className="border-l border-zinc-200 pl-4 dark:border-zinc-800">
-                <div className="text-sm font-bold tabular-nums text-zinc-900 dark:text-zinc-50">
+                <div className="text-sm font-bold tabular-nums text-indigo-600 dark:text-indigo-400">
                   {rep.score ?? "—"}
                 </div>
               </div>

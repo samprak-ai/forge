@@ -39,8 +39,8 @@ export default async function DashboardPage() {
 
       <main className="mx-auto w-full max-w-4xl px-6 py-10">
         {/* Streak banner */}
-        <div className="mb-6 flex items-center gap-3 rounded-lg border border-zinc-200 bg-white px-5 py-4 dark:border-zinc-800 dark:bg-zinc-900">
-          <span className="text-3xl font-bold tabular-nums text-zinc-900 dark:text-zinc-50">
+        <div className="mb-6 flex items-center gap-3 rounded-lg border border-indigo-200 bg-indigo-50 px-5 py-4 dark:border-indigo-900 dark:bg-indigo-950/40">
+          <span className="text-3xl font-bold tabular-nums text-indigo-600 dark:text-indigo-400">
             {streak}
           </span>
           <div>
@@ -64,7 +64,7 @@ export default async function DashboardPage() {
           <div className="flex gap-3">
             <Link
               href="/practice"
-              className="rounded-md bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+              className="rounded-md bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400"
             >
               Writing Practice
             </Link>

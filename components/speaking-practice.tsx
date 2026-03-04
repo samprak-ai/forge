@@ -17,7 +17,7 @@ function ScoreBar({ label, score, comment }: { label: string; score: number; com
       </div>
       <div className="h-1.5 w-full rounded-full bg-zinc-200 dark:bg-zinc-800">
         <div
-          className="h-1.5 rounded-full bg-zinc-900 transition-all duration-500 dark:bg-zinc-100"
+          className="h-1.5 rounded-full bg-indigo-600 transition-all duration-500 dark:bg-indigo-400"
           style={{ width: `${score}%` }}
         />
       </div>
@@ -190,7 +190,7 @@ export default function SpeakingPractice({ prompt, sessionId }: { prompt: Prompt
           {stage === "ready" && (
             <button
               onClick={startRecording}
-              className="rounded-md bg-zinc-900 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
+              className="rounded-md bg-indigo-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400"
             >
               Start Recording
             </button>
@@ -242,7 +242,7 @@ export default function SpeakingPractice({ prompt, sessionId }: { prompt: Prompt
       {result && (
         <div className="space-y-5 rounded-lg border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
           <div className="text-center">
-            <div className="text-4xl font-bold tabular-nums text-zinc-900 dark:text-zinc-50">
+            <div className="text-4xl font-bold tabular-nums text-indigo-600 dark:text-indigo-400">
               {result.overall}
             </div>
             <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-500">
