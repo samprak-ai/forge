@@ -29,11 +29,12 @@ export async function signup(formData: FormData) {
   });
 
   if (error) {
+    console.error("Signup error:", error.message, error.status);
     redirect("/signup?error=failed");
   }
 
   revalidatePath("/", "layout");
-  redirect("/signup?success=check-email");
+  redirect("/dashboard");
 }
 
 export async function logout() {
