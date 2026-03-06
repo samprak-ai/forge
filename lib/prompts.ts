@@ -83,3 +83,71 @@ export async function getPromptsByCategory(category: string): Promise<Prompt[]> 
   if (error || !data) return [];
   return data.map(toPrompt);
 }
+
+// ---------------------------------------------------------------------------
+// Interview prep prompts (imported from job-search-intel)
+// ---------------------------------------------------------------------------
+
+export type InterviewPrepPrompt = Prompt & {
+  source: string;
+  company: string;
+  roleTitle: string;
+  context: {
+    leverage_from_resume: string;
+    directional_angle: string;
+    opening_pitch?: string;
+    company_interview_philosophy?: string;
+    resume_leverage_map?: { experience: string; why_it_maps: string }[];
+    gap_mitigation?: { gap: string; strategy: string }[];
+  } | null;
+};
+
+function toInterviewPrepPrompt(row: {
+  id: string;
+  type: string;
+  category: string;
+  text: string;
+  word_limit: number | null;
+  time_limit_seconds: number | null;
+  source: string;
+  company: string;
+  role_title: string;
+  context: InterviewPrepPrompt["context"];
+}): InterviewPrepPrompt {
+  return {
+    ...toPrompt(row),
+    source: row.source,
+    company: row.company,
+    roleTitle: row.role_title,
+    context: row.context,
+  };
+}
+
+export async function getInterviewPrepPrompts(): Promise<InterviewPrepPrompt[]> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("prompts")
+    .select("*")
+    .eq("source", "interview_prep")
+    .order("company", { ascending: true })
+    .order("role_title", { ascending: true })
+    .order("created_at", { ascending: true });
+
+  if (error || !data) return [];
+  return data.map(toInterviewPrepPrompt);
+}
+
+export async function getInterviewPrepPromptById(id: string): Promise<InterviewPrepPrompt | null> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("prompts")
+    .select("*")
+    .eq("id", id)
+    .eq("source", "interview_prep")
+    .single();
+
+  if (error || !data) return null;
+  return toInterviewPrepPrompt(data);
+}

@@ -1,4 +1,4 @@
-export type Dimension = "clarity" | "structure" | "concision" | "persuasion" | "delivery";
+export type Dimension = "clarity" | "structure" | "concision" | "persuasion" | "delivery" | "vocabulary" | "confidence" | "articulation" | "alignment";
 
 export type DimensionScore = {
   dimension: Dimension;
