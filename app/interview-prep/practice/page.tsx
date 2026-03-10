@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getInterviewPrepPromptById } from "@/lib/prompts";
 import { getOrCreateTodaySession } from "@/lib/db";
-import InterviewPractice from "@/components/interview-practice";
+import InterviewPracticeTabs from "@/components/interview-practice-tabs";
 
 export default async function InterviewPracticePage({
   searchParams,
@@ -86,7 +86,7 @@ export default async function InterviewPracticePage({
           </p>
         </div>
 
-        <InterviewPractice prompt={prompt} sessionId={session.id} />
+        <InterviewPracticeTabs prompt={prompt} sessionId={session.id} />
       </main>
     </div>
   );

@@ -39,9 +39,11 @@ type Stage = "ready" | "recording" | "transcribing" | "scoring" | "done";
 export default function InterviewPractice({
   prompt,
   sessionId,
+  hideQuestionCard,
 }: {
   prompt: InterviewPrepPrompt;
   sessionId: string;
+  hideQuestionCard?: boolean;
 }) {
   const [stage, setStage] = useState<Stage>("ready");
   const [transcript, setTranscript] = useState("");
@@ -177,17 +179,19 @@ export default function InterviewPractice({
   return (
     <div className="mx-auto w-full max-w-2xl space-y-6">
       {/* Question card */}
-      <div className="rounded-lg border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
-        <span className="text-xs font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-          {prompt.category}
-        </span>
-        <p className="mt-2 text-base font-medium leading-relaxed text-zinc-900 dark:text-zinc-100">
-          &ldquo;{prompt.text}&rdquo;
-        </p>
-        <p className="mt-3 text-xs text-zinc-400 dark:text-zinc-500">
-          Time limit: {formatTime(timeLimit)}
-        </p>
-      </div>
+      {!hideQuestionCard && (
+        <div className="rounded-lg border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+          <span className="text-xs font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+            {prompt.category}
+          </span>
+          <p className="mt-2 text-base font-medium leading-relaxed text-zinc-900 dark:text-zinc-100">
+            &ldquo;{prompt.text}&rdquo;
+          </p>
+          <p className="mt-3 text-xs text-zinc-400 dark:text-zinc-500">
+            Time limit: {formatTime(timeLimit)}
+          </p>
+        </div>
+      )}
 
       {/* Context hints */}
       {prompt.context && stage !== "done" && (
