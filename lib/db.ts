@@ -224,6 +224,93 @@ export async function getWeeklyReps() {
   return data;
 }
 
+// ---------------------------------------------------------------------------
+// Interview Rounds (Mock Interview Mode)
+// ---------------------------------------------------------------------------
+
+export async function createInterviewRound(
+  company: string,
+  roleTitle: string,
+  questionCount: number
+) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("Not authenticated");
+
+  const { data, error } = await supabase
+    .from("interview_rounds")
+    .insert({
+      user_id: user.id,
+      company,
+      role_title: roleTitle,
+      question_count: questionCount,
+    })
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+export async function completeInterviewRound(
+  roundId: string,
+  transcripts: { prompt_id: string; question: string; transcript: string }[],
+  perQuestionScores: { prompt_id: string; overall: number; dimensions: DimensionScore[] }[],
+  roundScore: number,
+  roundAssessment: {
+    strengths: string[];
+    improvements: string[];
+    readiness_verdict: string;
+    summary: string;
+  }
+) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("interview_rounds")
+    .update({
+      transcripts,
+      per_question_scores: perQuestionScores,
+      round_score: roundScore,
+      round_assessment: roundAssessment,
+      completed_at: new Date().toISOString(),
+    })
+    .eq("id", roundId);
+
+  if (error) throw error;
+}
+
+export async function getInterviewRounds(
+  company?: string,
+  roleTitle?: string,
+  limit = 10
+) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("Not authenticated");
+
+  let query = supabase
+    .from("interview_rounds")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (company) query = query.eq("company", company);
+  if (roleTitle) query = query.eq("role_title", roleTitle);
+
+  const { data, error } = await query;
+
+  if (error) throw error;
+  return data;
+}
+
 export async function getRecentSessions(limit = 10) {
   const supabase = await createClient();
   const {

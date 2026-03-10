@@ -138,6 +138,26 @@ export async function getInterviewPrepPrompts(): Promise<InterviewPrepPrompt[]> 
   return data.map(toInterviewPrepPrompt);
 }
 
+export async function getPromptsForMockRound(
+  company: string,
+  roleTitle: string,
+  limit = 6
+): Promise<InterviewPrepPrompt[]> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("prompts")
+    .select("*")
+    .eq("source", "interview_prep")
+    .eq("company", company)
+    .eq("role_title", roleTitle)
+    .order("created_at", { ascending: true })
+    .limit(limit);
+
+  if (error || !data) return [];
+  return data.map(toInterviewPrepPrompt);
+}
+
 export async function getInterviewPrepPromptById(id: string): Promise<InterviewPrepPrompt | null> {
   const supabase = await createClient();
 

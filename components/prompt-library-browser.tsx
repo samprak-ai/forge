@@ -144,6 +144,36 @@ export default function PromptLibraryBrowser({
 
                       {isRoleExpanded && (
                         <div className="border-t border-zinc-50 bg-zinc-50/50 dark:border-zinc-800/50 dark:bg-zinc-950/30">
+                          {/* Mock Interview Button */}
+                          {roleData.prompts.length >= 3 && (
+                            <div className="px-5 py-3 pl-20">
+                              <Link
+                                href={`/interview-prep/mock?company=${encodeURIComponent(company)}&role=${encodeURIComponent(roleName)}`}
+                                className="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-xs font-medium text-white transition-colors hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400"
+                              >
+                                <svg
+                                  className="h-4 w-4"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                  strokeWidth={2}
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                                  />
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                  />
+                                </svg>
+                                Start Mock Interview ({Math.min(roleData.prompts.length, 6)} questions)
+                              </Link>
+                            </div>
+                          )}
+
                           {/* Philosophy + Pitch */}
                           {(roleData.philosophy || roleData.openingPitch) && (
                             <div className="space-y-3 px-5 py-4 pl-20">
