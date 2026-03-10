@@ -311,6 +311,137 @@ export async function getInterviewRounds(
   return data;
 }
 
+// ---------------------------------------------------------------------------
+// Practice Progress Analytics
+// ---------------------------------------------------------------------------
+
+export type ProgressRep = {
+  id: string;
+  type: "writing" | "speaking";
+  prompt_id: string;
+  score: number;
+  dimensions: DimensionScore[];
+  created_at: string;
+  company: string | null;
+  role_title: string | null;
+};
+
+export async function getProgressData(
+  limit = 200,
+  company?: string,
+  roleTitle?: string
+): Promise<ProgressRep[]> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("Not authenticated");
+
+  // Fetch reps with prompt metadata (company, role_title)
+  const { data: reps, error } = await supabase
+    .from("reps")
+    .select("id, type, prompt_id, score, dimensions, created_at, sessions!inner(user_id)")
+    .eq("sessions.user_id", user.id)
+    .order("created_at", { ascending: true })
+    .limit(limit);
+
+  if (error) throw error;
+  if (!reps || reps.length === 0) return [];
+
+  // Fetch prompt metadata for company/role mapping
+  const promptIds = [...new Set(reps.map((r) => r.prompt_id).filter(Boolean))];
+
+  const { data: prompts } = await supabase
+    .from("prompts")
+    .select("id, company, role_title")
+    .in("id", promptIds);
+
+  const promptMap = new Map(
+    (prompts || []).map((p) => [p.id, { company: p.company, role_title: p.role_title }])
+  );
+
+  // Map reps with prompt metadata and apply filters
+  const result: ProgressRep[] = [];
+  for (const rep of reps) {
+    const prompt = promptMap.get(rep.prompt_id);
+    const repCompany = prompt?.company || null;
+    const repRole = prompt?.role_title || null;
+
+    // Apply company/role filters
+    if (company && repCompany !== company) continue;
+    if (roleTitle && repRole !== roleTitle) continue;
+
+    result.push({
+      id: rep.id,
+      type: rep.type as "writing" | "speaking",
+      prompt_id: rep.prompt_id,
+      score: rep.score,
+      dimensions: rep.dimensions as DimensionScore[],
+      created_at: rep.created_at,
+      company: repCompany,
+      role_title: repRole,
+    });
+  }
+
+  return result;
+}
+
+export async function getProgressFilters(): Promise<{
+  companies: string[];
+  roles: { company: string; role_title: string }[];
+}> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) throw new Error("Not authenticated");
+
+  // Get distinct company/role combos from prompts that have reps
+  const { data: reps } = await supabase
+    .from("reps")
+    .select("prompt_id, sessions!inner(user_id)")
+    .eq("sessions.user_id", user.id);
+
+  if (!reps || reps.length === 0) return { companies: [], roles: [] };
+
+  const promptIds = [...new Set(reps.map((r) => r.prompt_id).filter(Boolean))];
+
+  const { data: prompts } = await supabase
+    .from("prompts")
+    .select("company, role_title")
+    .in("id", promptIds)
+    .not("company", "is", null);
+
+  if (!prompts) return { companies: [], roles: [] };
+
+  const companiesSet = new Set<string>();
+  const rolesSet = new Map<string, Set<string>>();
+
+  for (const p of prompts) {
+    if (p.company) {
+      companiesSet.add(p.company);
+      if (p.role_title) {
+        if (!rolesSet.has(p.company)) rolesSet.set(p.company, new Set());
+        rolesSet.get(p.company)!.add(p.role_title);
+      }
+    }
+  }
+
+  const roles: { company: string; role_title: string }[] = [];
+  for (const [comp, roleSet] of rolesSet) {
+    for (const role of roleSet) {
+      roles.push({ company: comp, role_title: role });
+    }
+  }
+
+  return {
+    companies: [...companiesSet].sort(),
+    roles: roles.sort((a, b) => a.company.localeCompare(b.company) || a.role_title.localeCompare(b.role_title)),
+  };
+}
+
 export async function getRecentSessions(limit = 10) {
   const supabase = await createClient();
   const {

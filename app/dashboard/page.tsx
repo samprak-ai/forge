@@ -86,6 +86,12 @@ export default async function DashboardPage() {
             >
               Prompt Library
             </Link>
+            <Link
+              href="/progress"
+              className="rounded-md border border-zinc-300 px-5 py-2.5 text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
+            >
+              Progress
+            </Link>
           </div>
         </div>
 
