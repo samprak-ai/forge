@@ -1,0 +1,68 @@
+import Link from "next/link";
+import { requestPasswordReset } from "@/lib/auth";
+
+export default async function ForgotPasswordPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ sent?: string }>;
+}) {
+  const { sent } = await searchParams;
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-black">
+      <div className="w-full max-w-sm space-y-8 px-4">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+            Reset your password
+          </h1>
+          <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+            We&apos;ll email you a link to set a new password
+          </p>
+        </div>
+
+        {sent && (
+          <div className="rounded-md bg-green-50 p-3 text-center text-sm text-green-700 dark:bg-green-900/20 dark:text-green-400">
+            If an account exists for that email, a reset link is on its way.
+          </div>
+        )}
+
+        <form action={requestPasswordReset} className="space-y-4">
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-zinc-700 dark:text-zinc-300"
+            >
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              autoComplete="email"
+              className="mt-1 block w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 placeholder-zinc-400 focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder-zinc-500 dark:focus:border-indigo-500 dark:focus:ring-indigo-500"
+              placeholder="you@example.com"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400"
+          >
+            Send reset link
+          </button>
+        </form>
+
+        <p className="text-center text-sm text-zinc-500 dark:text-zinc-400">
+          Remembered it?{" "}
+          <Link
+            href="/login"
+            className="font-medium text-indigo-600 hover:underline dark:text-indigo-400"
+          >
+            Sign in
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
+}
