@@ -81,6 +81,12 @@ export default async function DashboardPage() {
               Interview Prep
             </Link>
             <Link
+              href="/behavioral"
+              className="rounded-md border border-indigo-300 bg-indigo-50 px-5 py-2.5 text-sm font-medium text-indigo-700 transition-colors hover:bg-indigo-100 dark:border-indigo-800 dark:bg-indigo-950/40 dark:text-indigo-400 dark:hover:bg-indigo-900/40"
+            >
+              Behavioral
+            </Link>
+            <Link
               href="/prompts"
               className="rounded-md border border-zinc-300 px-5 py-2.5 text-sm font-medium text-zinc-900 transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-50 dark:hover:bg-zinc-900"
             >
